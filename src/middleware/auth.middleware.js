@@ -69,11 +69,13 @@ const verifyAuth = async (ctx, next) => {
 const verifyPermission = async (ctx, next) =>{
   console.log("验证修改权限的middleware~");
   // 1.获取到用户id和要修改的数据momentId
-  const {momentId} = ctx.request.params;
+  const [resourceKey] = Object.keys(ctx.params);
+  const tableName = resourceKey.replace('Id', '');
+  const resourceId = ctx.params[resourceKey];
   const {id} = ctx.user;
 
   // 2.通过数据momentId查找其对应的用户user_id是否与登录用户id相等
-  const result = await service.checkMoment(id, momentId);
+  const result = await service.checkResource(tableName, resourceId, id);
 
   if(!result){
     const error = new Error(errorTypes.UNPERMISSION);
@@ -82,6 +84,26 @@ const verifyPermission = async (ctx, next) =>{
 
   await next();
 }
+
+
+// const verifyPermission = (tableName) => {
+//   return async (ctx, next) =>{
+//     console.log("验证修改权限的middleware~");
+//     // 1.获取到用户id和要修改的数据momentId
+//     const {momentId} = ctx.request.params;
+//     const {id} = ctx.user;
+  
+//     // 2.通过数据momentId查找其对应的用户user_id是否与登录用户id相等
+//     const result = await service.checkResource(tableName, momentId, id);
+  
+//     if(!result){
+//       const error = new Error(errorTypes.UNPERMISSION);
+//       return ctx.app.emit('error', error, ctx);
+//     }
+  
+//     await next();
+//   }
+// }
 
 
 module.exports = {

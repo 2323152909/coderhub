@@ -7,9 +7,9 @@ class AuthService {
     return result[0];
   }
 
-  async checkMoment(id, momentId){
-    const statement = `select * from moment where id = ? and user_id = ?;`;
-    const [result] = await connection.execute(statement, [momentId, id]);
+  async checkResource(tableName, id, userId){
+    const statement = `select * from ${tableName} where id = ? and user_id = ?;`;
+    const [result] = await connection.execute(statement, [id, userId]);
     // console.log(result.length);
     return result.length === 0 ? false:true;
   }

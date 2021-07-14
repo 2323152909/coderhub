@@ -9,7 +9,6 @@ const connections = mysql.createPool({
   password:config.MYSQL_PASSWORD
 });
 
-
 connections.getConnection((err,con) =>{
   con.connect((err) => {
     if(err){
