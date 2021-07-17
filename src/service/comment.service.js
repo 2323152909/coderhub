@@ -26,6 +26,20 @@ class CommentService {
     const [result] = await connection.execute(statement, [commentId]);
     return result;
   }
+
+  async getCommentsByMomentId(momentId){
+    const statement = `
+      SELECT  
+        c.id, c.content, c.comment_id commentId, c.createAt createTime, 
+        JSON_OBJECT('id', u.id, 'name', u.name) user
+      FROM comment c
+      LEFT JOIN user u ON u.id = c.user_id
+      WHERE c.moment_id = ?;
+    `;
+    const [result] = await connection.execute(statement, [momentId]);
+
+    return result;
+  }
 }
 
 module.exports = new CommentService();

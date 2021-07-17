@@ -12,7 +12,7 @@ const verifyLogin = async (ctx, next) => {
   // 2.判断用户名好密码是否为空
   if(!name || !password){
     const error = new Error(errorTypes.NAME_OR_PASSWORD_IS_REQUIRED);
-    return ctx.app.emit('error', error, ctx)
+    return ctx.app.emit('error', error, ctx);
   }
 
   // 3.判断用户是否存在（用户不存在）
@@ -22,13 +22,13 @@ const verifyLogin = async (ctx, next) => {
   if(!user){
     console.log('查无此人');
     const error = new Error(errorTypes.USER_DOES_NOT_EXISTS);
-    return ctx.app.emit('error', error, ctx)
+    return ctx.app.emit('error', error, ctx);
   }
 
   // 4.判断密码是否与数据库中的密码是一致的（加密）
   if(md5password(password) !== user.password){
     const error = new Error(errorTypes.PASSWORD_IS_INCORRENT);
-    return ctx.app.emit('error', error, ctx)
+    return ctx.app.emit('error', error, ctx);
   }
 
   ctx.user = user;
@@ -41,10 +41,10 @@ const verifyAuth = async (ctx, next) => {
   // 1.获取token
   const authorization = ctx.headers.authorization;
   if(!authorization){
-    const error = new Error(errorTypes.UNAUTHORIZATION)
+    const error = new Error(errorTypes.UNAUTHORIZATION);
     return ctx.app.emit('error', error, ctx);
   }
-  const token = authorization.replace('Bearer ', '')
+  const token = authorization.replace('Bearer ', '');
 
   // 2.验证token
   try {
