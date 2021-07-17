@@ -5,9 +5,14 @@ class UserService {
     const { name, password } = user; 
     const statement = `insert into user (name,password) values (?, ?);`;
 
-    const result = await connection.execute(statement, [name, password]);
-    // 将user存储到数据库中
-    return result[0];
+    try {
+      const result = await connection.execute(statement, [name, password]);
+      // 将user存储到数据库中
+      return result[0];
+    } catch (error) {
+      console.log(error);
+    }
+    
   };
 
   async getUserByName(name) {
@@ -15,6 +20,13 @@ class UserService {
     const result = await connection.execute(statement, [name])
 
     return result[0];
+  }
+
+  async updateAvatarUrlById(avatarUrl, userId){
+    const statement = `UPDATE user SET avatar_url = ? WHERE id = ?;`;
+    const [result] = await connection.execute(statement, [avatarUrl, userId]);
+
+    return result;
   }
 }
 

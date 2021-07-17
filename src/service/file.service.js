@@ -13,6 +13,20 @@ class FileService {
 
     return result[0];
   }
+
+  async createPicture(filename, size, mimetype,momentId, userId){
+    const statement = `INSERT INTO file (filename, size, mimetype,moment_id, user_id) VALUES (?, ?, ?, ?, ?);`;
+    const [result] = await connection.execute(statement, [filename, size, mimetype,momentId, userId]);
+
+    return result;
+  }
+
+  async getFileInfoByFilename(filename){
+    const statement = `SELECT * FROM file WHERE filename = ?;`;
+    const [result] = await connection.execute(statement, [filename]);
+
+    return result[0];
+  }
 }
 
 module.exports = new FileService();
